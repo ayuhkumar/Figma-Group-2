@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NearNest - Trust Your Local Services</title>
+  <style>
+    /* CSS Reset & Variables */
+    :root {
+      --primary-forest: #183C35;
+      --bg-cream: #F6F3EA;
+      --accent-amber: #E8A45B;
+      --surface-white: #FFFFFF;
+      --secondary-sage: #D7E8D8;
+      --text-charcoal: #242B29;
+      --muted-gray: #6B7280;
+      --border-light: #E5E7EB;
+      --shadow-sm: 0 2px 8px rgba(24, 60, 53, 0.06);
+      --shadow-md: 0 4px 16px rgba(24, 60, 53, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #E2E8F0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-charcoal); }
+    
+    .mobile-container {
+      width: 100%;
+      max-width: 430px;
+      background-color: var(--bg-cream);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      padding-bottom: 74px;
+    }
+    
+    /* Top Bar Header */
+    .top-bar {
+      background-color: var(--primary-forest);
+      color: #FFFFFF;
+      padding: 22px 18px 18px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 4px 14px rgba(24, 60, 53, 0.2);
+    }
+    .location-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .location-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--secondary-sage);
+      font-weight: 600;
+    }
+    .society-status {
+      font-size: 11px;
+      background: rgba(215, 232, 216, 0.2);
+      color: #D7E8D8;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(215, 232, 216, 0.3);
+    }
+    .location-selector {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .location-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .badge-resident {
+      background: var(--accent-amber);
+      color: var(--primary-forest);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(232, 164, 91, 0.35);
+    }
+
+    /* Search Bar Trigger */
+    .search-trigger {
+      margin: 16px 16px 8px;
+      background: var(--surface-white);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border-light);
+      text-decoration: none;
+      color: var(--muted-gray);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .search-trigger:hover {
+      border-color: var(--primary-forest);
+      transform: translateY(-1px);
+    }
+    .search-icon { margin-right: 12px; font-size: 16px; }
+    .search-placeholder { font-size: 13px; font-weight: 500; }
+
+    /* Main Scroll Area */
+    .content-scroll {
+      padding: 12px 16px 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-forest);
+      margin: 16px 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .section-title:first-child { margin-top: 4px; }
+    .see-all {
+      font-size: 12px;
+      color: var(--primary-forest);
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+    .see-all:hover { opacity: 1; text-decoration: underline; }
+
+    /* Emergency Filter Banner */
+    .emergency-card {
+      background: linear-gradient(135deg, #183C35 0%, #204e45 100%);
+      color: #FFFFFF;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .emergency-card::after {
+      content: "⚡";
+      position: absolute;
+      right: -8px;
+      bottom: -15px;
+      font-size: 80px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .emergency-badge {
+      display: inline-block;
+      background: rgba(232, 164, 91, 0.25);
+      color: var(--accent-amber);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .emergency-card h3 { font-size: 16px; margin-bottom: 6px; color: #FFFFFF; font-weight: 700; }
+    .emergency-card p { font-size: 12px; color: var(--secondary-sage); margin-bottom: 14px; line-height: 1.45; }
+    .btn-emergency {
+      display: inline-block;
+      background-color: var(--accent-amber);
+      color: var(--primary-forest);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease;
+    }
+    .btn-emergency:active { transform: scale(0.97); }
+
+    /* Categories Grid */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .category-item {
+      background: var(--surface-white);
+      border-radius: 14px;
+      padding: 14px 6px 12px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-charcoal);
+      border: 1px solid #ECE7DB;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+    .category-item:hover {
+      border-color: var(--primary-forest);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .category-icon { font-size: 24px; margin-bottom: 6px; }
+    .category-name { font-size: 11px; font-weight: 600; color: var(--primary-forest); }
+
+    /* Fair-Price Index Snippet */
+    .fair-price-box {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--secondary-sage);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .fair-price-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .fair-price-header-left {
+      display: flex;
+      align-items: center;
+    }
+    .fair-price-icon { font-size: 16px; margin-right: 6px; }
+    .fair-price-title { font-size: 13px; font-weight: 700; color: var(--primary-forest); }
+    .fair-price-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0F5132;
+      background: #D1E7DD;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-light);
+    }
+    .price-row:last-child { border-bottom: none; }
+    .price-item { color: var(--muted-gray); font-weight: 500; }
+    .price-value { font-weight: 700; color: var(--text-charcoal); }
+
+    /* Newcomer Starter Card Banner */
+    .newcomer-banner {
+      background: #EBF3ED;
+      border: 1px solid #C4DEC7;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow-sm);
+    }
+    .newcomer-banner-text h4 { font-size: 13px; font-weight: 700; color: var(--primary-forest); margin-bottom: 2px; }
+    .newcomer-banner-text p { font-size: 11px; color: var(--muted-gray); }
+    .newcomer-banner-arrow {
+      background: var(--primary-forest);
+      color: #FFFFFF;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* Neighbor Vouched Spotlight Card */
+    .spotlight-card {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #ECE7DB;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .spotlight-card:hover {
+      border-color: var(--primary-forest);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .spotlight-badge {
+      background: var(--secondary-sage);
+      color: var(--primary-forest);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .spotlight-name { font-size: 16px; font-weight: 700; color: var(--text-charcoal); margin-bottom: 2px; }
+    .spotlight-trade { font-size: 12px; color: var(--muted-gray); margin-bottom: 10px; }
+    .spotlight-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--primary-forest);
+      font-weight: 600;
+      padding-top: 10px;
+      border-top: 1px solid #F1ECE1;
+    }
+
+    /* Persistent Bottom Navigation */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      background: var(--surface-white);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 12px;
+      z-index: 100;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted-gray);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      width: 25%;
+      transition: color 0.15s ease;
+    }
+    .nav-link.active { color: var(--primary-forest); font-weight: 700; }
+    .nav-icon { font-size: 19px; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="location-meta">
+        <span class="location-label">Verified Neighborhood</span>
+        <span class="society-status">● Society Connected</span>
+      </div>
+      <div class="location-selector">
+        <span class="location-title">Sector 4, Green Glen ▾</span>
+        <span class="badge-resident">Active Resident</span>
+      </div>
+    </header>
+
+    <!-- Search Trigger Link -->
+    <a href="search.html" class="search-trigger">
+      <span class="search-icon">🔍</span>
+      <span class="search-placeholder">Search plumbers, electricians, appliances...</span>
+    </a>
+
+    <div class="content-scroll">
+      <!-- Emergency Radius Filter Banner -->
+      <div class="emergency-card">
+        <span class="emergency-badge">Emergency Dispatch</span>
+        <h3>⚡ Radius-Gated Emergency Help</h3>
+        <p>Water leaks or power outages? Connect with verified tradespeople within 1.5 km right now.</p>
+        <a href="search.html?filter=urgent" class="btn-emergency">Find Providers Under 2 km</a>
+      </div>
+
+      <!-- Categories Grid -->
+      <div class="section-title">
+        <span>Essential Services</span>
+        <a href="search.html" class="see-all">All (8)</a>
+      </div>
+      <div class="category-grid">
+        <a href="search.html" class="category-item">
+          <span class="category-icon">🔧</span>
+          <span class="category-name">Plumber</span>
+        </a>
+        <a href="search.html" class="category-item">
+          <span class="category-icon">⚡</span>
+          <span class="category-name">Electrician</span>
+        </a>
+        <a href="search.html" class="category-item">
+          <span class="category-icon">❄️</span>
+          <span class="category-name">AC Repair</span>
+        </a>
+        <a href="search.html" class="category-item">
+          <span class="category-icon">🧹</span>
+          <span class="category-name">Cleaning</span>
+        </a>
+      </div>
+
+      <!-- Fair-Price Index Snippet -->
+      <div class="fair-price-box">
+        <div class="fair-price-header">
+          <div class="fair-price-header-left">
+            <span class="fair-price-icon">📊</span>
+            <span class="fair-price-title">Sector 4 Fair-Price Benchmark</span>
+          </div>
+          <span class="fair-price-tag">Crowdsourced</span>
+        </div>
+        <div class="price-row">
+          <span class="price-item">Standard Tap/Leak Repair</span>
+          <span class="price-value">₹200 - ₹350</span>
+        </div>
+        <div class="price-row">
+          <span class="price-item">Switchboard Replacement</span>
+          <span class="price-value">₹150 - ₹250</span>
+        </div>
+        <div class="price-row">
+          <span class="price-item">Appliance Diagnostics</span>
+          <span class="price-value">₹250 - ₹400</span>
+        </div>
+      </div>
+
+      <!-- Newcomer Guide Quick Action Banner -->
+      <a href="guide.html" class="newcomer-banner">
+        <div class="newcomer-banner-text">
+          <h4>📖 Newcomer Essentials Starter Guide</h4>
+          <p>Local utility contacts, water tankers & medical clinics</p>
+        </div>
+        <div class="newcomer-banner-arrow">→</div>
+      </a>
+
+      <!-- Vouched Spotlight -->
+      <div class="section-title">
+        <span>Vouched by Your Street</span>
+        <a href="search.html" class="see-all">View All</a>
+      </div>
+
+      <a href="profile.html" class="spotlight-card">
+        <span class="spotlight-badge">🛡️ Recommended by 18 families on Street 4</span>
+        <div class="spotlight-name">Rajesh Kumar</div>
+        <div class="spotlight-trade">Master Plumber • 12 Yrs Local Experience</div>
+        <div class="spotlight-meta">
+          <span>📍 0.8 km away</span>
+          <span>⚡ 15-20 min response</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Persistent Bottom Navigation -->
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link active">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a href="search.html" class="nav-link">
+        <span class="nav-icon">🔍</span>
+        <span>Search</span>
+      </a>
+      <a href="guide.html" class="nav-link">
+        <span class="nav-icon">📖</span>
+        <span>Newcomer</span>
+      </a>
+      <a href="saved.html" class="nav-link">
+        <span class="nav-icon">🔖</span>
+        <span>Saved</span>
+      </a>
+    </nav>
+  </div>
+</body>
+</html>

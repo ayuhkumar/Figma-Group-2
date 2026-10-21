@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NearNest - Newcomer Essentials Guide</title>
+  <style>
+    :root {
+      --primary-forest: #183C35;
+      --bg-cream: #F6F3EA;
+      --accent-amber: #E8A45B;
+      --surface-white: #FFFFFF;
+      --secondary-sage: #D7E8D8;
+      --text-charcoal: #242B29;
+      --muted-gray: #6B7280;
+      --border-light: #E5E7EB;
+      --shadow-sm: 0 2px 8px rgba(24, 60, 53, 0.06);
+      --shadow-md: 0 4px 16px rgba(24, 60, 53, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #E2E8F0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-charcoal); }
+    
+    .mobile-container {
+      width: 100%;
+      max-width: 430px;
+      background-color: var(--bg-cream);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      padding-bottom: 74px;
+    }
+
+    /* Top Header */
+    .guide-header {
+      background: var(--primary-forest);
+      color: #FFFFFF;
+      padding: 20px 16px 18px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .guide-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--secondary-sage);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .guide-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    /* Scrollable Area */
+    .content-scroll {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Emergency Utility Helpline Banner */
+    .emergency-helpline-box {
+      background: #FFF1F0;
+      border: 1px solid #FFCCC7;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .helpline-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #CF1322;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .helpline-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .helpline-item {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #FFEBE9;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .helpline-name { font-size: 11px; color: var(--muted-gray); margin-bottom: 2px; }
+    .helpline-num { font-size: 13px; font-weight: 700; color: #CF1322; }
+
+    /* Category Section Headers */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-forest);
+      margin: 16px 0 10px;
+    }
+
+    /* Settling-in Checklist Cards */
+    .checklist-box {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid #ECE7DB;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F1ECE1;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-checkbox {
+      margin-top: 3px;
+      accent-color: var(--primary-forest);
+      width: 16px;
+      height: 16px;
+    }
+    .check-content { flex: 1; }
+    .check-title { font-size: 13px; font-weight: 700; color: var(--text-charcoal); margin-bottom: 2px; }
+    .check-desc { font-size: 11.5px; color: var(--muted-gray); line-height: 1.35; }
+    .check-action-link {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--primary-forest);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* Essential Local Facilities */
+    .facility-card {
+      background: var(--surface-white);
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid #ECE7DB;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow-sm);
+    }
+    .facility-card:hover { border-color: var(--primary-forest); }
+    .facility-info h4 { font-size: 13px; font-weight: 700; color: var(--text-charcoal); margin-bottom: 2px; }
+    .facility-info p { font-size: 11px; color: var(--muted-gray); }
+    .facility-badge {
+      font-size: 11px;
+      background: var(--secondary-sage);
+      color: var(--primary-forest);
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* Persistent Bottom Navigation */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      background: var(--surface-white);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 12px;
+      z-index: 100;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted-gray);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      width: 25%;
+      transition: color 0.15s ease;
+    }
+    .nav-link.active { color: var(--primary-forest); font-weight: 700; }
+    .nav-icon { font-size: 19px; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Header -->
+    <header class="guide-header">
+      <div class="guide-tag">Curated Onboarding</div>
+      <div class="guide-title">Sector 4 Newcomer Guide</div>
+    </header>
+
+    <div class="content-scroll">
+      <!-- Emergency Helpline Grid -->
+      <div class="emergency-helpline-box">
+        <div class="helpline-title">
+          <span>🚨</span>
+          <span>Emergency &amp; Utility Helplines</span>
+        </div>
+        <div class="helpline-grid">
+          <a href="tel:1912" class="helpline-item">
+            <div class="helpline-name">Electricity Board</div>
+            <div class="helpline-num">📞 1912</div>
+          </a>
+          <a href="tel:07926578000" class="helpline-item">
+            <div class="helpline-name">Govt Water Supply</div>
+            <div class="helpline-num">📞 079-2657</div>
+          </a>
+          <a href="tel:+919876500001" class="helpline-item">
+            <div class="helpline-name">RWA Security Gate</div>
+            <div class="helpline-num">📞 Ext #101</div>
+          </a>
+          <a href="tel:108" class="helpline-item">
+            <div class="helpline-name">City Ambulance</div>
+            <div class="helpline-num">📞 108</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Settling-In Checklist -->
+      <div class="section-title">Settling-In Checklist</div>
+      <div class="checklist-box">
+        <div class="check-item">
+          <input type="checkbox" checked class="check-checkbox" />
+          <div class="check-content">
+            <div class="check-title">1. High-Speed Home Fiber Internet</div>
+            <div class="check-desc">JioFiber &amp; Airtel Xstream have dedicated optical junction boxes in Sector 4.</div>
+            <a href="search.html" class="check-action-link">View Vetted Cable Techs →</a>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" checked class="check-checkbox" />
+          <div class="check-content">
+            <div class="check-title">2. Piped Gas / Cylinder Booking</div>
+            <div class="check-desc">Adani Gas line connects Blocks A-D. HP Gas agency located 0.9 km away on Main St.</div>
+            <a href="tel:+919876500002" class="check-action-link">Call Cylinder Agency →</a>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" class="check-checkbox" />
+          <div class="check-content">
+            <div class="check-title">3. Drinking Water Can / RO Service</div>
+            <div class="check-desc">Daily 20L Bisleri can deliveries at 7:30 AM. Tap water TDS averages 420.</div>
+            <a href="search.html" class="check-action-link">Find RO Technicians →</a>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" class="check-checkbox" />
+          <div class="check-content">
+            <div class="check-title">4. Society Waste Segregation Rules</div>
+            <div class="check-desc">Wet waste collected at 8:00 AM; Dry recyclable pickup on Wednesdays &amp; Saturdays.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Essential Neighborhood Facilities -->
+      <div class="section-title">Nearby Essential Facilities</div>
+
+      <a href="https://maps.google.com" target="_blank" class="facility-card">
+        <div class="facility-info">
+          <h4>Sanjivani 24/7 Pharmacy &amp; Clinic</h4>
+          <p>0.4 km away • Night counter open</p>
+        </div>
+        <span class="facility-badge">Open Now</span>
+      </a>
+
+      <a href="https://maps.google.com" target="_blank" class="facility-card">
+        <div class="facility-info">
+          <h4>Green Grocers &amp; Daily Dairy</h4>
+          <p>0.6 km away • Fresh Amul milk &amp; organic produce</p>
+        </div>
+        <span class="facility-badge">0.6 km</span>
+      </a>
+
+      <a href="https://maps.google.com" target="_blank" class="facility-card">
+        <div class="facility-info">
+          <h4>Sector 4 Community EV Fast Charger</h4>
+          <p>0.3 km away • 60kW DC Dual Guns</p>
+        </div>
+        <span class="facility-badge">Available</span>
+      </a>
+    </div>
+
+    <!-- Persistent Bottom Navigation -->
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a href="search.html" class="nav-link">
+        <span class="nav-icon">🔍</span>
+        <span>Search</span>
+      </a>
+      <a href="guide.html" class="nav-link active">
+        <span class="nav-icon">📖</span>
+        <span>Newcomer</span>
+      </a>
+      <a href="saved.html" class="nav-link">
+        <span class="nav-icon">🔖</span>
+        <span>Saved</span>
+      </a>
+    </nav>
+  </div>
+</body>
+</html>

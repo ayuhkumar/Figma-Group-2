@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NearNest - Provider Trust Detail</title>
+  <style>
+    :root {
+      --primary-forest: #183C35;
+      --bg-cream: #F6F3EA;
+      --accent-amber: #E8A45B;
+      --surface-white: #FFFFFF;
+      --secondary-sage: #D7E8D8;
+      --text-charcoal: #242B29;
+      --muted-gray: #6B7280;
+      --border-light: #E5E7EB;
+      --shadow-sm: 0 2px 8px rgba(24, 60, 53, 0.06);
+      --shadow-md: 0 4px 16px rgba(24, 60, 53, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #E2E8F0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-charcoal); }
+    
+    .mobile-container {
+      width: 100%;
+      max-width: 430px;
+      background-color: var(--bg-cream);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      padding-bottom: 80px;
+    }
+
+    /* Hero Top Header */
+    .profile-hero {
+      background: var(--primary-forest);
+      color: #FFFFFF;
+      padding: 16px 16px 22px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+    .profile-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .back-btn {
+      text-decoration: none;
+      color: var(--secondary-sage);
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-save-top {
+      text-decoration: none;
+      background: rgba(215, 232, 216, 0.2);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(215, 232, 216, 0.4);
+    }
+
+    .hero-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #D7E8D8;
+      color: var(--primary-forest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      border: 2px solid var(--accent-amber);
+    }
+    .hero-info h2 { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
+    .hero-trade { font-size: 12px; color: var(--secondary-sage); margin-bottom: 6px; }
+    .hero-society-badge {
+      font-size: 11px;
+      background: rgba(232, 164, 91, 0.25);
+      color: var(--accent-amber);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    /* Scrollable Body Content */
+    .content-scroll {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Trust & Safety Audit Box (Iteration 3) */
+    .trust-box {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--secondary-sage);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .trust-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .trust-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary-forest);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .trust-status-badge {
+      font-size: 10.5px;
+      background: #D1E7DD;
+      color: #0F5132;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .verification-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .verification-chip {
+      background: #F8F9FA;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .v-chip-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary-forest);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .v-chip-sub { font-size: 10px; color: var(--muted-gray); }
+
+    /* Neighbor Vouched Breakdown */
+    .neighbor-box {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #ECE7DB;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .box-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-forest);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .box-title-tag { font-size: 11px; color: var(--muted-gray); font-weight: 500; }
+
+    .neighbor-review {
+      border-left: 3px solid var(--primary-forest);
+      padding: 8px 12px;
+      background: #FAF7F0;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 10px;
+    }
+    .neighbor-review:last-child { margin-bottom: 0; }
+    .review-author {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-charcoal);
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .review-time { font-size: 10px; color: var(--muted-gray); font-weight: normal; }
+    .review-text { font-size: 12px; color: #4B5563; line-height: 1.4; }
+
+    /* Transparent Rate Sheet vs Fair Price Benchmark */
+    .rates-box {
+      background: var(--surface-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #ECE7DB;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .rate-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-light);
+      font-size: 12.5px;
+    }
+    .rate-row:last-child { border-bottom: none; }
+    .rate-name { color: var(--text-charcoal); font-weight: 600; }
+    .rate-price { font-weight: 700; color: var(--primary-forest); text-align: right; }
+    .rate-bench { font-size: 10px; color: #059669; display: block; font-weight: 500; }
+
+    /* Persistent Contact Action Bar */
+    .contact-action-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      background: var(--surface-white);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      z-index: 100;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+    }
+    .btn-contact-call {
+      flex: 1.2;
+      background: var(--primary-forest);
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(24, 60, 53, 0.25);
+    }
+    .btn-contact-whatsapp {
+      flex: 1;
+      background: #25D366;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+    .btn-contact-save {
+      background: var(--bg-cream);
+      border: 1px solid var(--border-light);
+      color: var(--primary-forest);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Profile Hero -->
+    <header class="profile-hero">
+      <div class="profile-nav">
+        <a href="search.html" class="back-btn">← Back to Results</a>
+        <a href="saved.html" class="btn-save-top">★ Save Note</a>
+      </div>
+      <div class="hero-main">
+        <div class="hero-avatar">RK</div>
+        <div class="hero-info">
+          <h2>Rajesh Kumar</h2>
+          <div class="hero-trade">Master Plumber • 12 Years Experience</div>
+          <span class="hero-society-badge">📍 Green Glen Gate 2 (0.8 km)</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-scroll">
+      <!-- Trust & Verification Audit (Iteration 3) -->
+      <div class="trust-box">
+        <div class="trust-header">
+          <div class="trust-title">
+            <span>🛡️</span>
+            <span>Security &amp; Identity Verification</span>
+          </div>
+          <span class="trust-status-badge">Verified 100%</span>
+        </div>
+        <div class="verification-grid">
+          <div class="verification-chip">
+            <div class="v-chip-title">✓ Govt ID (Aadhaar)</div>
+            <div class="v-chip-sub">Verified &amp; on file</div>
+          </div>
+          <div class="verification-chip">
+            <div class="v-chip-title">✓ Police Clearance</div>
+            <div class="v-chip-sub">Zero criminal record</div>
+          </div>
+          <div class="verification-chip">
+            <div class="v-chip-title">✓ Society Pass</div>
+            <div class="v-chip-sub">Green Glen RWA badge</div>
+          </div>
+          <div class="verification-chip">
+            <div class="v-chip-title">✓ Physical Shop</div>
+            <div class="v-chip-sub">Shop #4, Street Market</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neighbor Vouch Breakdown -->
+      <div class="neighbor-box">
+        <div class="box-title">
+          <span>Neighbor Endorsements</span>
+          <span class="box-title-tag">18 Verified Families</span>
+        </div>
+
+        <div class="neighbor-review">
+          <div class="review-author">
+            <span>Pooja S. (A-304, Green Glen)</span>
+            <span class="review-time">3 days ago</span>
+          </div>
+          <div class="review-text">"Fixed our burst kitchen pipe under 15 minutes. Very respectful, wore mask and boot-covers, and charged exactly as per society rate card."</div>
+        </div>
+
+        <div class="neighbor-review">
+          <div class="review-author">
+            <span>Vikram Joshi (B-102, Sunrise)</span>
+            <span class="review-time">2 weeks ago</span>
+          </div>
+          <div class="review-text">"Rajesh bhai is our go-to plumber for 4 years. Honest guy, won't ask you to replace spare parts unless genuinely broken."</div>
+        </div>
+      </div>
+
+      <!-- Transparent Rate Sheet -->
+      <div class="rates-box">
+        <div class="box-title">
+          <span>Standard Service Rate Sheet</span>
+          <span class="box-title-tag">Sector 4 Benchmarked</span>
+        </div>
+
+        <div class="rate-row">
+          <div>
+            <div class="rate-name">General Inspection &amp; Diagnosis</div>
+            <span class="rate-bench">Benchmark: ₹150 - ₹200</span>
+          </div>
+          <div class="rate-price">₹150</div>
+        </div>
+
+        <div class="rate-row">
+          <div>
+            <div class="rate-name">Tap / Flush Valve Repair</div>
+            <span class="rate-bench">Benchmark: ₹200 - ₹350</span>
+          </div>
+          <div class="rate-price">₹250</div>
+        </div>
+
+        <div class="rate-row">
+          <div>
+            <div class="rate-name">Drain Blockage Clearing</div>
+            <span class="rate-bench">Benchmark: ₹300 - ₹450</span>
+          </div>
+          <div class="rate-price">₹300</div>
+        </div>
+
+        <div class="rate-row">
+          <div>
+            <div class="rate-name">Water Geyser Pipe Connection</div>
+            <span class="rate-bench">Benchmark: ₹350 - ₹500</span>
+          </div>
+          <div class="rate-price">₹350</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direct Contact Action Bar -->
+    <div class="contact-action-bar">
+      <a href="saved.html" class="btn-contact-save" title="Save to My Contacts">🔖</a>
+      <a href="https://wa.me/919876543210" class="btn-contact-whatsapp">💬 WhatsApp</a>
+      <a href="tel:+919876543210" class="btn-contact-call">📞 Direct Call</a>
+    </div>
+  </div>
+</body>
+</html>
